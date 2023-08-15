@@ -32,7 +32,7 @@ export class ModalImagenComponent {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        console.log(reader.result);
+        // console.log(reader.result);
         this.imgTemp = reader.result;
       } 
     }

@@ -33,7 +33,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         this.cargarUsuarios();
       });
   }
-  
+
   ngOnDestroy(): void {
     this.imagenSubs.unsubscribe();
   }
@@ -71,9 +71,9 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     }
     this.buquedasService
       .buscar('usuarios', termino)
-      .subscribe(({ total, usuarios }) => {
-        this.totalUsuarios = total;
-        this.usuarios = usuarios;
+      .subscribe((resp: any) => {
+        this.totalUsuarios = resp.total;
+        this.usuarios = resp.usuarios;
       });
   }
 

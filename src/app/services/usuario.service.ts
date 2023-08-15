@@ -33,6 +33,10 @@ export class UsuarioService {
     return this.usuario.uuid || '';
   }
 
+  get role(): 'ADMIN_ROLE' | 'USER_ROLE' | undefined{
+    return this.usuario.role
+  }
+
   get headers() {
     return {
       headers: {
@@ -56,11 +60,17 @@ export class UsuarioService {
           img,
           google
         );
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalStorage(resp.token, resp.menu);
+
         return true;
       }),
       catchError((error: any) => of(false))
     );
+  }
+
+  guardarLocalStorage(token: string, menu: any) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('menu', JSON.stringify(menu));
   }
 
   crearUsuario(formData: RegisterForm): Observable<any> {
@@ -68,7 +78,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/usuarios`, formData).pipe(
       tap((resp: any) => {
         // console.log(resp);
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalStorage(resp.token, resp.menu);
       })
     );
   }
@@ -99,7 +109,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login`, formData).pipe(
       tap((resp: any) => {
         // console.log(resp);
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalStorage(resp.token, resp.menu);
       })
     );
   }
@@ -108,18 +118,26 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login/google`, { token }).pipe(
       tap((resp: any) => {
         // console.log(resp);
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalStorage(resp.token, resp.menu);
       })
     );
   }
 
   logout() {
     localStorage.removeItem('token');
-    google.accounts.id.revoke('vbpradoo@gmail.com', () => {
-      this.ngZone.run(() => {
-        this.router.navigateByUrl('/login');
+
+    // Borrar menu
+    localStorage.removeItem('menu');
+
+    if (this.usuario.google) {
+      google.accounts.id.revoke(this.usuario.email, () => {
+        this.ngZone.run(() => {
+          this.router.navigateByUrl('/login');
+        });
       });
-    });
+    } else {
+      this.router.navigateByUrl('/login');
+    }
   }
 
   cargarUsuarios(desde: number = 0) {
@@ -149,14 +167,15 @@ export class UsuarioService {
       );
   }
 
-  eliminarUsuario(usuario: Usuario){
+  eliminarUsuario(usuario: Usuario) {
     console.log('Eliminando usuario');
-    return this.http.delete(`${base_url}/usuarios/${usuario.uuid}`, this.headers);
-    
+    return this.http.delete(
+      `${base_url}/usuarios/${usuario.uuid}`,
+      this.headers
+    );
   }
 
   guardarUsuario(usuario: Usuario) {
-
     return this.http.put(
       `${base_url}/usuarios/${usuario.uuid}`,
       usuario,

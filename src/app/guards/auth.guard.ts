@@ -5,7 +5,7 @@ import { tap } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state) => {
 
-  console.log('paso por el canActivate del guard');
+  // console.log('paso por el canActivate del guard');
   const router = inject(Router)
   return inject(UsuarioService).validarToken()
             .pipe(

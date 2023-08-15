@@ -56,7 +56,7 @@ export class HospitalesComponent implements OnInit, OnDestroy{
   }
 
   guardarCambios(hospital: Hospital){
-    console.log(hospital);
+    // console.log(hospital);
     this.hospitalService.actualizarHospital((hospital.uuid as string), hospital.nombre)
           .subscribe((resp)=> {
             Swal.fire( 'Actualizado', hospital.nombre, 'success');
@@ -65,7 +65,7 @@ export class HospitalesComponent implements OnInit, OnDestroy{
   }
 
   eliminarHospital(hospital: Hospital){
-    console.log(hospital);
+    // console.log(hospital);
     this.hospitalService.borrarHospital((hospital.uuid as string))
           .subscribe((resp)=> {
             this.cargarHospitales();
@@ -98,7 +98,7 @@ export class HospitalesComponent implements OnInit, OnDestroy{
       inputPlaceholder: 'Nombre del hospital',
       showCancelButton: true
     })
-    console.log(value);
+    // console.log(value);
 
     if(value.trim().length > 0){
       this.hospitalService.crearHospital(value)
@@ -111,7 +111,7 @@ export class HospitalesComponent implements OnInit, OnDestroy{
   }
 
   abrirModal(hospital: Hospital) {
-    console.log(hospital);
+    // console.log(hospital);
     this.modalImagenService.abrirModal(
       'hospitales',
       hospital.uuid || '',

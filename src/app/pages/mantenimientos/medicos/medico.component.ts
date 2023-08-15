@@ -38,17 +38,17 @@ export class MedicoComponent implements OnInit {
     this.cargarHospitales();
 
     this.medicoForm.get('hospital')?.valueChanges.subscribe((hospitalId) => {
-      console.log(hospitalId);
+      // console.log(hospitalId);
       this.hospitalSeleccionado = this.hospitales.find(
         (hosp) => hosp.uuid === hospitalId
       );
-      console.log(this.hospitalSeleccionado);
+      // console.log(this.hospitalSeleccionado);
     });
   }
 
   cargarHospitales() {
     this.hospitalService.cargarHospitales().subscribe((resp: any) => {
-      console.log(resp);
+      // console.log(resp);
       this.hospitales = resp.hospitales;
     });
   }
@@ -74,7 +74,7 @@ export class MedicoComponent implements OnInit {
           if (!medico) {
             this.router.navigateByUrl(`/dashboard/medicos`);
           }
-          console.log(medico);
+          // console.log(medico);
           const { nombre, hospital: { _id } } = medico;
           this.medicoSeleccionado = medico;
           this.medicoForm.setValue({ nombre: nombre, hospital: _id });

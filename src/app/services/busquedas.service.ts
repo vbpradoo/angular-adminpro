@@ -64,6 +64,11 @@ export class BusquedasService {
       );
   }
 
+  busquedaGlobal(termino: string){
+    const url = `${base_url}/find/${termino}`;
+    return this.http.get(url, this.headers);
+  }
+
   transformarMedicos(resultados: any[]): Medico[] {
     return resultados.map(
       (med) =>

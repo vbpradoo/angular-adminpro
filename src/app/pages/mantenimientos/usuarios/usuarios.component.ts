@@ -109,14 +109,14 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   cambiarRole(usuario: Usuario) {
-    console.log(usuario);
+    // console.log(usuario);
     this.usuarioService.guardarUsuario(usuario).subscribe((resp: any) => {
-      console.log(resp);
+      // console.log(resp);
     });
   }
 
   abrirModal(usuario: Usuario) {
-    console.log(usuario);
+    // console.log(usuario);
     this.modalImagenService.abrirModal(
       'usuarios',
       usuario.uuid || '',
